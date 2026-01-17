@@ -1,18 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-<meta charset="UTF-8">
-<title>Travel & Lifestyle App</title>
-<link rel="stylesheet" href="style.css">
+  <title>Travel & Lifestyle App</title>
 </head>
-<body class="center">
+<body>
 
-<h1>📱 Travel & Lifestyle App</h1>
-<p>Scan the QR Code to install</p>
+<script>
+const installed = localStorage.getItem("installed");
+const registered = localStorage.getItem("userRegistered");
+const loggedIn = localStorage.getItem("loggedIn");
 
-<img src="https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=https://belleeeharvey-cpu.github.io/travel-life/install.html" alt="QR Code">
-
-<p class="note">Simulated installation only</p>
+if (!installed) {
+  window.location.href = "install.html";
+} else if (!registered) {
+  window.location.href = "signup.html";
+} else if (!loggedIn) {
+  window.location.href = "login.html";
+} else {
+  window.location.href = "profile.html";
+}
+</script>
 
 </body>
 </html>

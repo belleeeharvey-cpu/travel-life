@@ -1,28 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Install App</title>
+  <title>Install</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="phone">
-  <h2>Install Application</h2>
-
-  <div class="app-box">
-    <h3>Travel & Lifestyle</h3>
-    <p>Version 1.0</p>
-  </div>
-
-  <button class="btn" onclick="installApp()">INSTALL</button>
+  <h2>Install Travel & Lifestyle</h2>
+  <button class="btn" onclick="install()">INSTALL</button>
 </div>
 
 <script>
-if (localStorage.getItem("installed")) {
-  window.location.href = "login.html";
-}
-
-function installApp() {
+function install() {
   localStorage.setItem("installed", "true");
   window.location.href = "signup.html";
 }
