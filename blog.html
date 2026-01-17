@@ -1,18 +1,115 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Travel Blog</title>
-<link rel="stylesheet" href="style.css">
+  <title>My Memories</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="phone">
-<h2>📸 My Travel Blog</h2>
+  <h2>📁 My Travel Albums</h2>
 
-<div class="card">Upload Photo / Video</div>
-<div class="card">My Memories Album</div>
-<div class="card">Travel Stories</div>
+  <!-- Create Album -->
+  <input type="text" id="albumName" placeholder="New Album Name">
+  <button class="btn" onclick="createAlbum()">Create Album</button>
 
+  <!-- Album Selector -->
+  <select id="albumSelect" onchange="loadAlbum()"></select>
+
+  <!-- Upload -->
+  <input type="file" id="mediaInput" accept="image/*,video/*" multiple>
+  <button class="btn" onclick="uploadMedia()">Upload Media</button>
+
+  <!-- Gallery -->
+  <div id="gallery" class="gallery"></div>
 </div>
+
+<script>
+let albums = JSON.parse(localStorage.getItem("albums")) || {};
+let currentAlbum = "";
+
+function saveAlbums() {
+  localStorage.setItem("albums", JSON.stringify(albums));
+}
+
+function createAlbum() {
+  const name = document.getElementById("albumName").value;
+  if (!name || albums[name]) return;
+
+  albums[name] = [];
+  saveAlbums();
+  updateAlbumList();
+}
+
+function updateAlbumList() {
+  const select = document.getElementById("albumSelect");
+  select.innerHTML = "";
+  Object.keys(albums).forEach(name => {
+    const option = document.createElement("option");
+    option.value = name;
+    option.textContent = name;
+    select.appendChild(option);
+  });
+  loadAlbum();
+}
+
+function loadAlbum() {
+  currentAlbum = document.getElementById("albumSelect").value;
+  const gallery = document.getElementById("gallery");
+  gallery.innerHTML = "";
+
+  if (!albums[currentAlbum]) return;
+
+  albums[currentAlbum].forEach((media, index) => {
+    const box = document.createElement("div");
+    box.className = "media-box";
+
+    let element;
+    if (media.type.startsWith("image")) {
+      element = document.createElement("img");
+    } else {
+      element = document.createElement("video");
+      element.controls = true;
+    }
+    element.src = media.data;
+
+    const del = document.createElement("button");
+    del.textContent = "Delete";
+    del.className = "delete-btn";
+    del.onclick = () => deleteMedia(index);
+
+    box.appendChild(element);
+    box.appendChild(del);
+    gallery.appendChild(box);
+  });
+}
+
+function uploadMedia() {
+  const files = document.getElementById("mediaInput").files;
+  if (!currentAlbum) return;
+
+  for (let file of files) {
+    const reader = new FileReader();
+    reader.onload = () => {
+      albums[currentAlbum].push({
+        type: file.type,
+        data: reader.result
+      });
+      saveAlbums();
+      loadAlbum();
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function deleteMedia(index) {
+  albums[currentAlbum].splice(index, 1);
+  saveAlbums();
+  loadAlbum();
+}
+
+window.onload = updateAlbumList;
+</script>
+
 </body>
 </html>

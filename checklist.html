@@ -1,26 +1,44 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Checklist</title>
-<link rel="stylesheet" href="style.css">
+  <title>Trip Checklist</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="phone">
-<h2>✅ Trip Checklist</h2>
+  <h2>📋 Trip Checklist</h2>
 
-<ul>
-<li>✔ Passport</li>
-<li>✔ Clothes</li>
-<li>✔ Camera</li>
-<li>✔ Hotel Booking</li>
-</ul>
+  <label><input type="checkbox" onchange="saveCheck()"> Passport</label>
+  <label><input type="checkbox" onchange="saveCheck()"> Clothes</label>
+  <label><input type="checkbox" onchange="saveCheck()"> Camera</label>
+  <label><input type="checkbox" onchange="saveCheck()"> Hotel Booking</label>
 
-<h3>🌍 Suggested Trips</h3>
-<div class="card">Beach Getaway</div>
-<div class="card">Mountain Adventure</div>
-<div class="card">City Tour</div>
-
+  <h3>🌍 Suggested Trips</h3>
+  <div class="card">Beach Vacation</div>
+  <div class="card">Mountain Hiking</div>
+  <div class="card">City Tour</div>
 </div>
+
+<script>
+function saveCheck() {
+  const checks = [];
+  document.querySelectorAll("input[type=checkbox]").forEach(c => {
+    checks.push(c.checked);
+  });
+  localStorage.setItem("checklist", JSON.stringify(checks));
+}
+
+function loadCheck() {
+  const saved = JSON.parse(localStorage.getItem("checklist"));
+  if (!saved) return;
+  document.querySelectorAll("input[type=checkbox]").forEach((c, i) => {
+    c.checked = saved[i];
+  });
+}
+
+window.onload = loadCheck;
+</script>
+
 </body>
 </html>

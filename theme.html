@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Customize Theme</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="phone">
+  <h2>🎨 Customize Theme</h2>
+
+  <label>Primary Color</label>
+  <input type="color" id="colorPicker">
+
+  <label>Font</label>
+  <select id="fontPicker">
+    <option value="Arial">Arial</option>
+    <option value="Georgia">Georgia</option>
+    <option value="Courier New">Courier</option>
+    <option value="Verdana">Verdana</option>
+  </select>
+
+  <button class="btn" onclick="saveTheme()">Save Theme</button>
+</div>
+
+<script>
+function saveTheme() {
+  const theme = {
+    color: document.getElementById("colorPicker").value,
+    font: document.getElementById("fontPicker").value
+  };
+  localStorage.setItem("theme", JSON.stringify(theme));
+  applyTheme();
+}
+
+function applyTheme() {
+  const theme = JSON.parse(localStorage.getItem("theme"));
+  if (!theme) return;
+  document.documentElement.style.setProperty("--primary", theme.color);
+  document.documentElement.style.setProperty("--font", theme.font);
+}
+
+window.onload = applyTheme;
+</script>
+
+</body>
+</html>

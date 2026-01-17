@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Trip Budget Tracker</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="phone">
+  <h2>💰 Trip Budget</h2>
+
+  <!-- Budget Limit -->
+  <input type="number" id="budgetLimit" placeholder="Set Budget Limit">
+  <button class="btn" onclick="saveBudget()">Save Budget</button>
+
+  <p id="budgetStatus"></p>
+
+  <!-- Add Expense -->
+  <h3>Add Expense</h3>
+  <input type="text" id="expenseName" placeholder="Expense name">
+  <input type="number" id="expenseAmount" placeholder="Amount">
+  
+  <select id="expenseCategory">
+    <option>Food</option>
+    <option>Hotel</option>
+    <option>Transport</option>
+    <option>Shopping</option>
+    <option>Other</option>
+  </select>
+
+  <button class="btn" onclick="addExpense()">Add Expense</button>
+
+  <!-- Expense List -->
+  <h3>Expenses</h3>
+  <ul id="expenseList"></ul>
+
+  <h3>Total Spent: ₱<span id="total">0</span></h3>
+</div>
+
+<script>
+let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+let budget = localStorage.getItem("budget") || 0;
+
+document.getElementById("budgetLimit").value = budget;
+
+function saveBudget() {
+  budget = document.getElementById("budgetLimit").value;
+  localStorage.setItem("budget", budget);
+  calculateTotal();
+}
+
+function addExpense() {
+  const name = expenseName.value;
+  const amount = Number(expenseAmount.value);
+  const category = expenseCategory.value;
+
+  if (!name || !amount) return;
+
+  expenses.push({ name, amount, category });
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+  expenseName.value = "";
+  expenseAmount.value = "";
+
+  renderExpenses();
+}
+
+function renderExpenses() {
+  const list = document.getElementById("expenseList");
+  list.innerHTML = "";
+
+  expenses.forEach((e, i) => {
+    const li = document.createElement("li");
+    li.innerHTML = `${e.name} (${e.category}) - ₱${e.amount}
+      <button onclick="deleteExpense(${i})">❌</button>`;
+    list.appendChild(li);
+  });
+
+  calculateTotal();
+}
+
+function deleteExpense(index) {
+  expenses.splice(index, 1);
+  localStorage.setItem("expenses", JSON.stringify(expenses));
+  renderExpenses();
+}
+
+function calculateTotal() {
+  const total = expenses.reduce((sum, e) => sum + e.amount, 0);
+  document.getElementById("total").textContent = total;
+
+  const status = document.getElementById("budgetStatus");
+  if (budget && total > budget) {
+    status.textContent = "⚠ Budget exceeded!";
+    status.style.color = "red";
+  } else {
+    status.textContent = "✅ Within budget";
+    status.style.color = "green";
+  }
+}
+
+renderExpenses();
+</script>
+
+</body>
+</html>
