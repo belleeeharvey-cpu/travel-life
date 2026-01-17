@@ -1,19 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Login</title>
-<link rel="stylesheet" href="style.css">
+  <title>Login</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="phone">
-<h2>Login</h2>
+  <h2>Login</h2>
 
-<input type="email" placeholder="Email">
-<input type="password" placeholder="Password">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
 
-<a href="profile.html" class="btn">LOGIN</a>
+  <button class="btn" onclick="login()">LOGIN</button>
 </div>
+
+<script>
+if (localStorage.getItem("loggedIn")) {
+  window.location.href = "profile.html";
+}
+
+function login() {
+  const savedUser = JSON.parse(localStorage.getItem("user"));
+
+  if (
+    email.value === savedUser.email &&
+    password.value === savedUser.password
+  ) {
+    localStorage.setItem("loggedIn", "true");
+    window.location.href = "profile.html";
+  } else {
+    alert("Invalid login");
+  }
+}
+</script>
 
 </body>
 </html>

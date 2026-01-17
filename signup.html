@@ -1,20 +1,39 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Sign Up</title>
-<link rel="stylesheet" href="style.css">
+  <title>Sign Up</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <div class="phone">
-<h2>Create Account</h2>
+  <h2>Create Account</h2>
 
-<input type="text" placeholder="Full Name">
-<input type="email" placeholder="Email">
-<input type="password" placeholder="Password">
+  <input type="text" id="name" placeholder="Full Name">
+  <input type="email" id="email" placeholder="Email">
+  <input type="password" id="password" placeholder="Password">
 
-<a href="login.html" class="btn">SIGN UP</a>
+  <button class="btn" onclick="signup()">SIGN UP</button>
 </div>
+
+<script>
+if (localStorage.getItem("userRegistered")) {
+  window.location.href = "login.html";
+}
+
+function signup() {
+  const user = {
+    name: name.value,
+    email: email.value,
+    password: password.value
+  };
+
+  localStorage.setItem("user", JSON.stringify(user));
+  localStorage.setItem("userRegistered", "true");
+
+  window.location.href = "login.html";
+}
+</script>
 
 </body>
 </html>

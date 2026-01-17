@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Install App</title>
-<link rel="stylesheet" href="style.css">
+  <title>Install App</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -14,10 +14,19 @@
     <p>Version 1.0</p>
   </div>
 
-  <a href="signup.html" class="btn">INSTALL</a>
-
-  <p class="small">This is a design-only installation screen</p>
+  <button class="btn" onclick="installApp()">INSTALL</button>
 </div>
+
+<script>
+if (localStorage.getItem("installed")) {
+  window.location.href = "login.html";
+}
+
+function installApp() {
+  localStorage.setItem("installed", "true");
+  window.location.href = "signup.html";
+}
+</script>
 
 </body>
 </html>

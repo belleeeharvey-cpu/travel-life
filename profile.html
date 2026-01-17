@@ -18,5 +18,15 @@
 </div>
 
 </div>
+
+<button class="btn" onclick="logout()">Logout</button>
+
+<script>
+function logout() {
+  localStorage.removeItem("loggedIn");
+  window.location.href = "login.html";
+}
+</script>
+
 </body>
 </html>
