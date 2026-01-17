@@ -1,0 +1,64 @@
+:root {
+  --primary: #6c63ff;
+  --bg: #f5f6fa;
+  --font: 'Arial', sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--bg);
+  margin: 0;
+}
+
+.center {
+  text-align: center;
+  padding: 40px;
+}
+
+.phone {
+  max-width: 360px;
+  margin: auto;
+  background: white;
+  padding: 20px;
+  border-radius: 20px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin: 8px 0;
+}
+
+.btn {
+  display: block;
+  background: var(--primary);
+  color: white;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.card {
+  background: #eee;
+  padding: 15px;
+  border-radius: 10px;
+  margin: 10px 0;
+}
+
+.menu a {
+  display: block;
+  padding: 12px;
+  background: #f0f0f0;
+  margin: 8px 0;
+  text-decoration: none;
+  color: black;
+  border-radius: 10px;
+}
+
+.small {
+  font-size: 12px;
+  color: gray;
+}

@@ -1,24 +1,19 @@
 <!DOCTYPE html>
 <html>
 <head>
-<link rel="stylesheet" href="css/style.css">
+<title>Login</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
+<div class="phone">
 <h2>Login</h2>
-<input id="email" placeholder="Email">
-<input id="pass" type="password" placeholder="Password">
-<button onclick="login()">Login</button>
 
-<script>
-function login(){
-  let email = document.getElementById("email").value;
-  if(email){
-    localStorage.setItem("user", email);
-    location.href = "index.html";
-  }
-}
-</script>
+<input type="email" placeholder="Email">
+<input type="password" placeholder="Password">
+
+<a href="profile.html" class="btn">LOGIN</a>
+</div>
 
 </body>
 </html>

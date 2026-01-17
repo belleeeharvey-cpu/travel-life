@@ -1,33 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Installing Travel-Life App</title>
-  <link rel="stylesheet" href="css/style.css">
-  
+<title>Install App</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>Travel-Life App</h1>
-  <p>Preparing installation...</p>
-  <div style="width: 100%; background: #ccc;">
-    <div id="progress" style="width:0%; height:20px; background: #4CAF50;"></div>
+
+<div class="phone">
+  <h2>Install Application</h2>
+
+  <div class="app-box">
+    <h3>Travel & Lifestyle</h3>
+    <p>Version 1.0</p>
   </div>
 
-  <p id="status">Installing 0%</p>
+  <a href="signup.html" class="btn">INSTALL</a>
 
-  <script>
-    let progress = 0;
-    let interval = setInterval(() => {
-      if(progress >= 100){
-        clearInterval(interval);
-        document.getElementById('status').innerText = "Installation Complete!";
-      } else {
-        progress++;
-        document.getElementById('progress').style.width = progress + "%";
-        document.getElementById('status').innerText = "Installing " + progress + "%";
-      }
-    }, 50);
-    window.location = "login.html";
+  <p class="small">This is a design-only installation screen</p>
+</div>
 
-  </script>
 </body>
 </html>
