@@ -113,3 +113,109 @@ li button {
   background: transparent;
   font-size: 16px;
 }
+
+:root {
+  --bg: #f5f6fa;
+  --primary: #6c63ff;
+  --font: Arial;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  background: var(--bg);
+}
+
+/* DASHBOARD */
+.dashboard {
+  display: flex;
+  height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 240px;
+  background: white;
+  padding: 15px;
+  box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+}
+
+.profile-section {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile-section img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  cursor: pointer;
+  border: 3px solid var(--primary);
+}
+
+.profile-section input {
+  width: 100%;
+  margin-top: 8px;
+  text-align: center;
+}
+
+/* SIDEBAR BUTTONS */
+.sidebar button {
+  width: 100%;
+  padding: 12px;
+  margin: 6px 0;
+  border: none;
+  border-radius: 10px;
+  background: var(--primary);
+  color: white;
+  font-size: 15px;
+}
+
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+
+.panel {
+  animation: fade 0.3s;
+}
+
+.hidden {
+  display: none;
+}
+
+@keyframes fade {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.btn {
+  background: var(--primary);
+  color: white;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+/* PHONE FRAME */
+.app {
+  width: 390px;      /* iPhone 14 width */
+  height: 844px;     /* iPhone 14 height */
+  margin: auto;
+  border-radius: 30px;
+  overflow: hidden;
+  background: var(--bg);
+  box-shadow: 0 0 30px rgba(0,0,0,0.3);
+}
+
+/* CENTER APP ON DESKTOP */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}

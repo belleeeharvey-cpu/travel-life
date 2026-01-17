@@ -1,33 +1,148 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>User Profile</title>
-<link rel="stylesheet" href="style.css">
+  <title>Dashboard</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#6c63ff">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
 
-<div class="phone">
-<h2>👤 My Profile</h2>
+<script>
+if (!localStorage.getItem("loggedIn")) {
+  window.location.href = "login.html";
+}
+</script>
 
-<div class="menu">
-  <a href="blog.html">📸 Blog & Memories</a>
-  <a href="checklist.html">✅ Trip Checklist</a>
-  <a href="hotels.html">🏨 Hotel Booking</a>
-  <a href="transport.html">🚕 Transportation</a>
-  <a href="payment.html">💳 Payment</a>
+<div class="app">
+<div class="dashboard">
+
+  <!-- LEFT SIDEBAR -->
+  <div class="sidebar">
+    <div class="profile-section">
+      <label for="profilePicInput">
+        <img id="profilePic" src="https://via.placeholder.com/100">
+      </label>
+      <input type="file" id="profilePicInput" accept="image/*" hidden>
+
+      <input id="username" placeholder="Your Name">
+    </div>
+
+    <button onclick="show('customize')">🎨 Customize</button>
+    <button onclick="show('memories')">📸 Memories</button>
+    <button onclick="show('checklist')">📋 Checklist</button>
+    <button onclick="show('budget')">💰 Budget</button>
+    <button onclick="logout()">🚪 Logout</button>
+  </div>
+
+  <!-- RIGHT CONTENT -->
+  <div class="content">
+    
+    <!-- CUSTOMIZE -->
+    <div id="customize" class="panel">
+      <h2>Customize App</h2>
+
+      <label>Background Color</label>
+      <input type="color" id="bgColor">
+
+      <label>Primary Color</label>
+      <input type="color" id="primaryColor">
+
+      <label>Font</label>
+      <select id="font">
+        <option value="Arial">Arial</option>
+        <option value="Verdana">Verdana</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Courier New">Courier</option>
+      </select>
+
+      <button class="btn" onclick="saveTheme()">Save</button>
+    </div>
+
+    <!-- MEMORIES -->
+    <div id="memories" class="panel hidden">
+      <h2>My Memories</h2>
+      <p>Go to Albums to manage photos & videos.</p>
+    </div>
+
+    <!-- CHECKLIST -->
+    <div id="checklist" class="panel hidden">
+      <h2>Trip Checklist</h2>
+      <label><input type="checkbox"> Passport</label><br>
+      <label><input type="checkbox"> Clothes</label><br>
+      <label><input type="checkbox"> Camera</label>
+    </div>
+
+    <!-- BUDGET -->
+    <div id="budget" class="panel hidden">
+      <h2>Trip Budget</h2>
+      <p>Manage your expenses here.</p>
+    </div>
+
+  </div>
 </div>
-
-</div>
-
-<button class="btn" onclick="logout()">Logout</button>
 
 <script>
+// ---------- PANEL SWITCH ----------
+function show(id) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.add("hidden"));
+  document.getElementById(id).classList.remove("hidden");
+}
+
+// ---------- PROFILE PICTURE ----------
+const picInput = document.getElementById("profilePicInput");
+const profilePic = document.getElementById("profilePic");
+
+picInput.onchange = () => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    profilePic.src = reader.result;
+    localStorage.setItem("profilePic", reader.result);
+  };
+  reader.readAsDataURL(picInput.files[0]);
+};
+
+const savedPic = localStorage.getItem("profilePic");
+if (savedPic) profilePic.src = savedPic;
+
+// ---------- USERNAME ----------
+const usernameInput = document.getElementById("username");
+usernameInput.value = localStorage.getItem("username") || "";
+
+usernameInput.oninput = () => {
+  localStorage.setItem("username", usernameInput.value);
+};
+
+// ---------- THEME ----------
+function saveTheme() {
+  const theme = {
+    bg: bgColor.value,
+    primary: primaryColor.value,
+    font: font.value
+  };
+  localStorage.setItem("theme", JSON.stringify(theme));
+  applyTheme();
+}
+
+function applyTheme() {
+  const theme = JSON.parse(localStorage.getItem("theme"));
+  if (!theme) return;
+
+  document.documentElement.style.setProperty("--bg", theme.bg);
+  document.documentElement.style.setProperty("--primary", theme.primary);
+  document.documentElement.style.setProperty("--font", theme.font);
+}
+
+applyTheme();
+
+// ---------- LOGOUT ----------
 function logout() {
   localStorage.removeItem("loggedIn");
   window.location.href = "login.html";
 }
 </script>
-
 
 </body>
 </html>
