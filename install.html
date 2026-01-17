@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Installing Travel-Life App</title>
+  <link rel="stylesheet" href="css/style.css">
+  
+</head>
+<body>
+  <h1>Travel-Life App</h1>
+  <p>Preparing installation...</p>
+  <div style="width: 100%; background: #ccc;">
+    <div id="progress" style="width:0%; height:20px; background: #4CAF50;"></div>
+  </div>
+
+  <p id="status">Installing 0%</p>
+
+  <script>
+    let progress = 0;
+    let interval = setInterval(() => {
+      if(progress >= 100){
+        clearInterval(interval);
+        document.getElementById('status').innerText = "Installation Complete!";
+      } else {
+        progress++;
+        document.getElementById('progress').style.width = progress + "%";
+        document.getElementById('status').innerText = "Installing " + progress + "%";
+      }
+    }, 50);
+    window.location = "login.html";
+
+  </script>
+</body>
+</html>

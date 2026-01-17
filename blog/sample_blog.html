@@ -1,0 +1,15 @@
+<h2>My Travel Blog</h2>
+
+<input id="title" placeholder="Blog Title">
+<textarea id="content" placeholder="Write your blog"></textarea>
+<button onclick="post()">Post</button>
+
+<div id="posts"></div>
+
+<script>
+function post(){
+  let t = title.value;
+  let c = content.value;
+  posts.innerHTML += `<h3>${t}</h3><p>${c}</p>`;
+}
+</script>
