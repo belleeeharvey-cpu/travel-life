@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TravelLife App</title>
+  <title>TravelLife Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
@@ -11,87 +11,60 @@
 </head>
 <body>
 
-<script>
-if (!localStorage.getItem("loggedIn")) {
-  window.location.href = "login.html";
-}
-</script>
-
-<div class="app">
+<div class="phone-app">
 
   <!-- TOP BAR -->
-  <div class="topbar">
+  <div class="header-bar">
     <label class="avatar">
-      <img id="profilePic" src="https://via.placeholder.com/50">
+      <img id="profilePic" class="header-avatar" src="https://via.placeholder.com/45">
       <input type="file" id="picInput" accept="image/*" hidden>
     </label>
-    <span id="username" class="username">User</span>
+    <span id="username" class="header-username">Username</span>
   </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="main">
-
-    <!-- CUSTOMIZE -->
-    <div id="customize" class="panel active">
-      <h2>🎨 Customize App</h2>
-
-      <label>Background Color</label>
-      <input type="color" id="bg">
-
-      <label>Primary Color</label>
-      <input type="color" id="primary">
-
-      <label>Font</label>
-      <select id="font">
-        <option>Arial</option>
-        <option>Verdana</option>
-        <option>Georgia</option>
-        <option>Courier New</option>
-      </select>
-
-      <button class="btn" onclick="saveTheme()">Save</button>
-    </div>
-
-    <!-- ALBUMS -->
-    <div id="albums" class="panel">
-      <h2>📸 Albums</h2>
-      <p>Your uploaded memories appear here.</p>
-    </div>
-
-    <!-- CHECKLIST -->
-    <div id="checklist" class="panel">
-      <h2>📋 Checklist</h2>
-      <label><input type="checkbox"> Passport</label><br>
-      <label><input type="checkbox"> Clothes</label><br>
-      <label><input type="checkbox"> Camera</label>
-    </div>
-
-    <!-- BUDGET -->
-    <div id="budget" class="panel">
-      <h2>💰 Budget Tracker</h2>
-      <p>Track your expenses here.</p>
-    </div>
-
+  <!-- CONTENT -->
+  <div class="content-area" id="content">
+    <h2>Welcome 👋</h2>
+    <p>Select a feature below.</p>
   </div>
 
   <!-- BOTTOM NAV -->
-  <div class="bottom-nav">
-    <button onclick="openPanel('customize')">🎨</button>
-    <button onclick="openPanel('albums')">📸</button>
-    <button onclick="openPanel('checklist')">📋</button>
-    <button onclick="openPanel('budget')">💰</button>
+  <div class="nav-bar">
+    <button onclick="openCustomize()">🎨</button>
+    <button onclick="showContent('albums')">📸</button>
+    <button onclick="showContent('checklist')">📋</button>
+    <button onclick="showContent('budget')">💰</button>
   </div>
 
 </div>
 
-<script>
-// ---------- PANEL SWITCH ----------
-function openPanel(id) {
-  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
-  document.getElementById(id).classList.add("active");
-}
+<!-- CUSTOMIZE POPUP -->
+<div class="modal" id="customizeModal">
+  <div class="modal-box">
+    <h3>Customize App</h3>
 
-// ---------- PROFILE PICTURE ----------
+    <label>Background Color</label>
+    <input type="color" id="bgColor">
+
+    <label>Font</label>
+    <select id="fontStyle">
+      <option value="Arial">Arial</option>
+      <option value="Verdana">Verdana</option>
+      <option value="Georgia">Georgia</option>
+      <option value="Courier New">Courier New</option>
+    </select>
+
+    <button class="btn" onclick="saveTheme()">Save</button>
+    <button class="btn close" onclick="closeCustomize()">Close</button>
+  </div>
+</div>
+
+<script>
+/* ---------- USER ---------- */
+const user = JSON.parse(localStorage.getItem("user")) || { name: "User" };
+document.getElementById("username").textContent = user.name;
+
+/* ---------- PROFILE PIC ---------- */
 const picInput = document.getElementById("picInput");
 const profilePic = document.getElementById("profilePic");
 
@@ -107,28 +80,46 @@ picInput.onchange = () => {
 const savedPic = localStorage.getItem("profilePic");
 if (savedPic) profilePic.src = savedPic;
 
-// ---------- USERNAME ----------
-const userData = JSON.parse(localStorage.getItem("user"));
-document.getElementById("username").textContent =
-  userData?.name || "User";
+/* ---------- CONTENT ---------- */
+function showContent(type) {
+  const content = document.getElementById("content");
 
-// ---------- THEME ----------
+  if (type === "albums") {
+    content.innerHTML = "<h2>📸 Albums</h2><p>Your travel memories.</p>";
+  }
+  if (type === "checklist") {
+    content.innerHTML = "<h2>📋 Checklist</h2><p>Your saved checklist.</p>";
+  }
+  if (type === "budget") {
+    content.innerHTML = "<h2>💰 Budget</h2><p>Your trip expenses.</p>";
+  }
+}
+
+/* ---------- CUSTOMIZE MODAL ---------- */
+function openCustomize() {
+  document.getElementById("customizeModal").style.display = "flex";
+}
+
+function closeCustomize() {
+  document.getElementById("customizeModal").style.display = "none";
+}
+
+/* ---------- THEME ---------- */
 function saveTheme() {
   const theme = {
-    bg: bg.value,
-    primary: primary.value,
-    font: font.value
+    bg: bgColor.value,
+    font: fontStyle.value
   };
   localStorage.setItem("theme", JSON.stringify(theme));
   applyTheme();
+  closeCustomize();
 }
 
 function applyTheme() {
   const t = JSON.parse(localStorage.getItem("theme"));
   if (!t) return;
-  document.documentElement.style.setProperty("--bg", t.bg);
-  document.documentElement.style.setProperty("--primary", t.primary);
-  document.documentElement.style.setProperty("--font", t.font);
+  document.querySelector(".phone-app").style.background = t.bg;
+  document.body.style.fontFamily = t.font;
 }
 
 applyTheme();
@@ -136,4 +127,3 @@ applyTheme();
 
 </body>
 </html>
-

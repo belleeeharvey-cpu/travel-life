@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Test Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #000;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .phone {
+      width: 360px;
+      height: 740px;
+      background: #f2f2f2;
+      border-radius: 25px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top {
+      height: 70px;
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    .content {
+      flex: 1;
+      padding: 15px;
+    }
+
+    .bottom {
+      height: 60px;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #ccc;
+    }
+
+    .bottom button {
+      border: none;
+      background: #6c63ff;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      width: 80%;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="phone">
+
+  <div class="top">
+    <img src="https://via.placeholder.com/45">
+    <strong>Username</strong>
+  </div>
+
+  <div class="content" id="content">
+    <h3>Dashboard</h3>
+    <p>Tap buttons below</p>
+  </div>
+
+  <div class="bottom">
+    <button onclick="openCustomize()">🎨</button>
+    <button onclick="setContent('Albums')">📸</button>
+    <button onclick="setContent('Checklist')">📋</button>
+    <button onclick="setContent('Budget')">💰</button>
+  </div>
+
+</div>
+
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h3>Customize</h3>
+    <input type="color" onchange="document.querySelector('.phone').style.background=this.value">
+    <br><br>
+    <button onclick="closeCustomize()">Close</button>
+  </div>
+</div>
+
+<script>
+function openCustomize() {
+  document.getElementById("modal").style.display = "flex";
+}
+
+function closeCustomize() {
+  document.getElementById("modal").style.display = "none";
+}
+
+function setContent(text) {
+  document.getElementById("content").innerHTML = "<h3>"+text+"</h3>";
+}
+</script>
+
+</body>
+</html>
