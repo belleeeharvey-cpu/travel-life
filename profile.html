@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Dashboard</title>
+  <title>TravelLife App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="style.css">
   <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#6c63ff">
@@ -17,82 +18,81 @@ if (!localStorage.getItem("loggedIn")) {
 </script>
 
 <div class="app">
-<div class="dashboard">
 
-  <!-- LEFT SIDEBAR -->
-  <div class="sidebar">
-    <div class="profile-section">
-      <label for="profilePicInput">
-        <img id="profilePic" src="https://via.placeholder.com/100">
-      </label>
-      <input type="file" id="profilePicInput" accept="image/*" hidden>
-
-      <input id="username" placeholder="Your Name">
-    </div>
-
-    <button onclick="show('customize')">🎨 Customize</button>
-    <button onclick="show('memories')">📸 Memories</button>
-    <button onclick="show('checklist')">📋 Checklist</button>
-    <button onclick="show('budget')">💰 Budget</button>
-    <button onclick="logout()">🚪 Logout</button>
+  <!-- TOP BAR -->
+  <div class="topbar">
+    <label class="avatar">
+      <img id="profilePic" src="https://via.placeholder.com/50">
+      <input type="file" id="picInput" accept="image/*" hidden>
+    </label>
+    <span id="username" class="username">User</span>
   </div>
 
-  <!-- RIGHT CONTENT -->
-  <div class="content">
-    
+  <!-- MAIN CONTENT -->
+  <div class="main">
+
     <!-- CUSTOMIZE -->
-    <div id="customize" class="panel">
-      <h2>Customize App</h2>
+    <div id="customize" class="panel active">
+      <h2>🎨 Customize App</h2>
 
       <label>Background Color</label>
-      <input type="color" id="bgColor">
+      <input type="color" id="bg">
 
       <label>Primary Color</label>
-      <input type="color" id="primaryColor">
+      <input type="color" id="primary">
 
       <label>Font</label>
       <select id="font">
-        <option value="Arial">Arial</option>
-        <option value="Verdana">Verdana</option>
-        <option value="Georgia">Georgia</option>
-        <option value="Courier New">Courier</option>
+        <option>Arial</option>
+        <option>Verdana</option>
+        <option>Georgia</option>
+        <option>Courier New</option>
       </select>
 
       <button class="btn" onclick="saveTheme()">Save</button>
     </div>
 
-    <!-- MEMORIES -->
-    <div id="memories" class="panel hidden">
-      <h2>My Memories</h2>
-      <p>Go to Albums to manage photos & videos.</p>
+    <!-- ALBUMS -->
+    <div id="albums" class="panel">
+      <h2>📸 Albums</h2>
+      <p>Your uploaded memories appear here.</p>
     </div>
 
     <!-- CHECKLIST -->
-    <div id="checklist" class="panel hidden">
-      <h2>Trip Checklist</h2>
+    <div id="checklist" class="panel">
+      <h2>📋 Checklist</h2>
       <label><input type="checkbox"> Passport</label><br>
       <label><input type="checkbox"> Clothes</label><br>
       <label><input type="checkbox"> Camera</label>
     </div>
 
     <!-- BUDGET -->
-    <div id="budget" class="panel hidden">
-      <h2>Trip Budget</h2>
-      <p>Manage your expenses here.</p>
+    <div id="budget" class="panel">
+      <h2>💰 Budget Tracker</h2>
+      <p>Track your expenses here.</p>
     </div>
 
   </div>
+
+  <!-- BOTTOM NAV -->
+  <div class="bottom-nav">
+    <button onclick="openPanel('customize')">🎨</button>
+    <button onclick="openPanel('albums')">📸</button>
+    <button onclick="openPanel('checklist')">📋</button>
+    <button onclick="openPanel('budget')">💰</button>
+  </div>
+
 </div>
 
 <script>
 // ---------- PANEL SWITCH ----------
-function show(id) {
-  document.querySelectorAll(".panel").forEach(p => p.classList.add("hidden"));
-  document.getElementById(id).classList.remove("hidden");
+function openPanel(id) {
+  document.querySelectorAll(".panel").forEach(p => p.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
 }
 
 // ---------- PROFILE PICTURE ----------
-const picInput = document.getElementById("profilePicInput");
+const picInput = document.getElementById("picInput");
 const profilePic = document.getElementById("profilePic");
 
 picInput.onchange = () => {
@@ -108,18 +108,15 @@ const savedPic = localStorage.getItem("profilePic");
 if (savedPic) profilePic.src = savedPic;
 
 // ---------- USERNAME ----------
-const usernameInput = document.getElementById("username");
-usernameInput.value = localStorage.getItem("username") || "";
-
-usernameInput.oninput = () => {
-  localStorage.setItem("username", usernameInput.value);
-};
+const userData = JSON.parse(localStorage.getItem("user"));
+document.getElementById("username").textContent =
+  userData?.name || "User";
 
 // ---------- THEME ----------
 function saveTheme() {
   const theme = {
-    bg: bgColor.value,
-    primary: primaryColor.value,
+    bg: bg.value,
+    primary: primary.value,
     font: font.value
   };
   localStorage.setItem("theme", JSON.stringify(theme));
@@ -127,22 +124,16 @@ function saveTheme() {
 }
 
 function applyTheme() {
-  const theme = JSON.parse(localStorage.getItem("theme"));
-  if (!theme) return;
-
-  document.documentElement.style.setProperty("--bg", theme.bg);
-  document.documentElement.style.setProperty("--primary", theme.primary);
-  document.documentElement.style.setProperty("--font", theme.font);
+  const t = JSON.parse(localStorage.getItem("theme"));
+  if (!t) return;
+  document.documentElement.style.setProperty("--bg", t.bg);
+  document.documentElement.style.setProperty("--primary", t.primary);
+  document.documentElement.style.setProperty("--font", t.font);
 }
 
 applyTheme();
-
-// ---------- LOGOUT ----------
-function logout() {
-  localStorage.removeItem("loggedIn");
-  window.location.href = "login.html";
-}
 </script>
 
 </body>
 </html>
+
