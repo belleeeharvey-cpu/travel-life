@@ -1,84 +1,118 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#6c63ff">
+
   <meta charset="UTF-8">
   <title>Test Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    /* RESET */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
-    body {
-      background: #000;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      font-family: Arial, sans-serif;
-    }
+/* FULL SCREEN CENTER */
+body {
+  background: #000;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: Arial, sans-serif;
+}
 
-    .phone {
-      width: 360px;
-      height: 500px;
-      background: #f2f2f2;
-      border-radius: 25px;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-    }
+/* PHONE APP – RESPONSIVE */
+.phone {
+  width: 100vw;
+  max-width: 420px;      /* big phones */
+  height: 100vh;
+  max-height: 900px;
+  background: #f2f2f2;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 0;
+}
 
-    .top {
-      height: 70px;
-      background: white;
-      display: flex;
-      align-items: center;
-      padding: 10px;
-      gap: 10px;
-      border-bottom: 1px solid #ccc;
-    }
+/* ROUND CORNERS ONLY ON BIG SCREENS */
+@media (min-width: 500px) {
+  .phone {
+    border-radius: 28px;
+    height: 90vh;
+  }
+}
 
-    .top img {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-    }
+/* TOP BAR */
+.top {
+  height: 8vh;
+  min-height: 60px;
+  max-height: 80px;
+  background: white;
+  display: flex;
+  align-items: center;
+  padding: 1vh 3vw;
+  gap: 3vw;
+  border-bottom: 1px solid #ddd;
+}
 
-    .content {
-      flex: 1;
-      padding: 15px;
-    }
+.top img {
+  width: 12vw;
+  max-width: 48px;
+  height: 12vw;
+  max-height: 48px;
+  border-radius: 50%;
+}
 
-    .bottom {
-      height: 60px;
-      background: white;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      border-top: 1px solid #ccc;
-    }
+/* CONTENT */
+.content {
+  flex: 1;
+  padding: 4vw;
+  overflow-y: auto;
+}
 
-    .bottom button {
-      border: none;
-      background: #6c63ff;
-      color: white;
-      padding: 8px 12px;
-      border-radius: 10px;
-    }
+/* BOTTOM NAV */
+.bottom {
+  height: 9vh;
+  min-height: 60px;
+  background: white;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  border-top: 1px solid #ddd;
+}
 
-    .modal {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,.6);
-      display: none;
-      justify-content: center;
-      align-items: center;
-    }
+.bottom button {
+  background: #6c63ff;
+  color: white;
+  border: none;
+  padding: 1.2vh 3vw;
+  font-size: 4vw;
+  max-font-size: 16px;
+  border-radius: 12px;
+}
 
-    .modal-box {
-      width: 80%;
-      background: white;
-      padding: 20px;
-      border-radius: 15px;
-    }
+/* POPUP */
+.modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  display: none;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  width: 90vw;
+  max-width: 360px;
+  background: white;
+  padding: 5vw;
+  border-radius: 18px;
+}
+
   </style>
 </head>
 
@@ -86,10 +120,14 @@
 
 <div class="phone">
 
-  <div class="top">
-    <img src="https://via.placeholder.com/45">
-    <strong>Username</strong>
-  </div>
+ <div class="top">
+  <label>
+    <img id="profilePic" src="https://via.placeholder.com/45">
+    <input type="file" id="picInput" accept="image/*" hidden>
+  </label>
+  <strong id="username"></strong>
+</div>
+
 
   <div class="content" id="content">
     <h3>Dashboard</h3>
@@ -98,9 +136,34 @@
 
   <div class="bottom">
     <button onclick="openCustomize()">🎨</button>
-    <button onclick="setContent('Albums')">📸</button>
-    <button onclick="setContent('Checklist')">📋</button>
-    <button onclick="setContent('Budget')">💰</button>
+  function setContent(text) {
+  if (text === 'Albums') {
+    content.innerHTML = `
+      <h3>📸 Albums</h3>
+      <input type="file" multiple accept="image/*,video/*">
+    `;
+  }
+}
+
+   if (text === 'Checklist') {
+  content.innerHTML = `
+    <h3>📋 Checklist</h3>
+    <label><input type="checkbox"> Passport</label><br>
+    <label><input type="checkbox"> Clothes</label><br>
+    <label><input type="checkbox"> Charger</label>
+  `;
+}
+
+
+   if (text === 'Budget') {
+  content.innerHTML = `
+    <h3>💰 Budget</h3>
+    <input placeholder="Expense">
+    <input type="number" placeholder="Amount">
+    <button>Add</button>
+  `;
+}
+
   </div>
 
 </div>
@@ -127,6 +190,32 @@ function setContent(text) {
   document.getElementById("content").innerHTML = "<h3>"+text+"</h3>";
 }
 </script>
+
+<script>
+const user = JSON.parse(localStorage.getItem("user")) || { name: "User" };
+document.getElementById("username").textContent = user.name;
+
+const picInput = document.getElementById("picInput");
+const profilePic = document.getElementById("profilePic");
+
+picInput.onchange = () => {
+  const reader = new FileReader();
+  reader.onload = () => {
+    profilePic.src = reader.result;
+    localStorage.setItem("profilePic", reader.result);
+  };
+  reader.readAsDataURL(picInput.files[0]);
+};
+
+const savedPic = localStorage.getItem("profilePic");
+if (savedPic) profilePic.src = savedPic;
+</script>
+<script>
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
 
 </body>
 </html>
