@@ -1,128 +1,131 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>TravelLife Dashboard</title>
+  <meta charset="UTF-8">
+  <title>Test Dashboard</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style.css">
-  <link rel="manifest" href="manifest.json">
-<meta name="theme-color" content="#6c63ff">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
+    body {
+      background: #000;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: Arial, sans-serif;
+    }
+
+    .phone {
+      width: 360px;
+      height: 500px;
+      background: #f2f2f2;
+      border-radius: 25px;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .top {
+      height: 70px;
+      background: white;
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      gap: 10px;
+      border-bottom: 1px solid #ccc;
+    }
+
+    .top img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    .content {
+      flex: 1;
+      padding: 15px;
+    }
+
+    .bottom {
+      height: 60px;
+      background: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid #ccc;
+    }
+
+    .bottom button {
+      border: none;
+      background: #6c63ff;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 10px;
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,.6);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-box {
+      width: 80%;
+      background: white;
+      padding: 20px;
+      border-radius: 15px;
+    }
+  </style>
 </head>
+
 <body>
 
-<div class="phone-app">
+<div class="phone">
 
-  <!-- TOP BAR -->
-  <div class="header-bar">
-    <label class="avatar">
-      <img id="profilePic" class="header-avatar" src="https://via.placeholder.com/45">
-      <input type="file" id="picInput" accept="image/*" hidden>
-    </label>
-    <span id="username" class="header-username">Username</span>
+  <div class="top">
+    <img src="https://via.placeholder.com/45">
+    <strong>Username</strong>
   </div>
 
-  <!-- CONTENT -->
-  <div class="content-area" id="content">
-    <h2>Welcome 👋</h2>
-    <p>Select a feature below.</p>
+  <div class="content" id="content">
+    <h3>Dashboard</h3>
+    <p>Tap buttons below</p>
   </div>
 
-  <!-- BOTTOM NAV -->
-  <div class="nav-bar">
+  <div class="bottom">
     <button onclick="openCustomize()">🎨</button>
-    <button onclick="showContent('albums')">📸</button>
-    <button onclick="showContent('checklist')">📋</button>
-    <button onclick="showContent('budget')">💰</button>
+    <button onclick="setContent('Albums')">📸</button>
+    <button onclick="setContent('Checklist')">📋</button>
+    <button onclick="setContent('Budget')">💰</button>
   </div>
 
 </div>
 
-<!-- CUSTOMIZE POPUP -->
-<div class="modal" id="customizeModal">
+<div class="modal" id="modal">
   <div class="modal-box">
-    <h3>Customize App</h3>
-
-    <label>Background Color</label>
-    <input type="color" id="bgColor">
-
-    <label>Font</label>
-    <select id="fontStyle">
-      <option value="Arial">Arial</option>
-      <option value="Verdana">Verdana</option>
-      <option value="Georgia">Georgia</option>
-      <option value="Courier New">Courier New</option>
-    </select>
-
-    <button class="btn" onclick="saveTheme()">Save</button>
-    <button class="btn close" onclick="closeCustomize()">Close</button>
+    <h3>Customize</h3>
+    <input type="color" onchange="document.querySelector('.phone').style.background=this.value">
+    <br><br>
+    <button onclick="closeCustomize()">Close</button>
   </div>
 </div>
 
 <script>
-/* ---------- USER ---------- */
-const user = JSON.parse(localStorage.getItem("user")) || { name: "User" };
-document.getElementById("username").textContent = user.name;
-
-/* ---------- PROFILE PIC ---------- */
-const picInput = document.getElementById("picInput");
-const profilePic = document.getElementById("profilePic");
-
-picInput.onchange = () => {
-  const reader = new FileReader();
-  reader.onload = () => {
-    profilePic.src = reader.result;
-    localStorage.setItem("profilePic", reader.result);
-  };
-  reader.readAsDataURL(picInput.files[0]);
-};
-
-const savedPic = localStorage.getItem("profilePic");
-if (savedPic) profilePic.src = savedPic;
-
-/* ---------- CONTENT ---------- */
-function showContent(type) {
-  const content = document.getElementById("content");
-
-  if (type === "albums") {
-    content.innerHTML = "<h2>📸 Albums</h2><p>Your travel memories.</p>";
-  }
-  if (type === "checklist") {
-    content.innerHTML = "<h2>📋 Checklist</h2><p>Your saved checklist.</p>";
-  }
-  if (type === "budget") {
-    content.innerHTML = "<h2>💰 Budget</h2><p>Your trip expenses.</p>";
-  }
-}
-
-/* ---------- CUSTOMIZE MODAL ---------- */
 function openCustomize() {
-  document.getElementById("customizeModal").style.display = "flex";
+  document.getElementById("modal").style.display = "flex";
 }
 
 function closeCustomize() {
-  document.getElementById("customizeModal").style.display = "none";
+  document.getElementById("modal").style.display = "none";
 }
 
-/* ---------- THEME ---------- */
-function saveTheme() {
-  const theme = {
-    bg: bgColor.value,
-    font: fontStyle.value
-  };
-  localStorage.setItem("theme", JSON.stringify(theme));
-  applyTheme();
-  closeCustomize();
+function setContent(text) {
+  document.getElementById("content").innerHTML = "<h3>"+text+"</h3>";
 }
-
-function applyTheme() {
-  const t = JSON.parse(localStorage.getItem("theme"));
-  if (!t) return;
-  document.querySelector(".phone-app").style.background = t.bg;
-  document.body.style.fontFamily = t.font;
-}
-
-applyTheme();
 </script>
 
 </body>
